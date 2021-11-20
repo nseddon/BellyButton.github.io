@@ -65,7 +65,7 @@ function buildCharts(sample) {
     
     //  5. Create a variable that holds the first sample in the array.
     var individualResults = sampleArray[0];
-    //console.log(individualResults);
+    console.log(individualResults);
 
     // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
     var otuIds = individualResults.otu_ids;
@@ -80,6 +80,7 @@ function buildCharts(sample) {
     //  so the otu_ids with the most bacteria are last. 
     var yticks = otuIds.map(object => "OTU "+object).slice(0,10).reverse();
     //console.log(yticks);
+    var slicedOtuLabels = otuLabels.map(object => object).slice(0,10).reverse();
     var slicedSampleValues = sampleValues.map(object => object).slice(0,10).reverse();
     //console.log(slicedSampleValues);
     
@@ -87,7 +88,7 @@ function buildCharts(sample) {
     var barData = {
       x: slicedSampleValues,
       y: yticks,
-      text: otuLabels,
+      text: slicedOtuLabels,
       type: "bar",
       orientation: "h"
     };
@@ -96,10 +97,10 @@ function buildCharts(sample) {
     
     // // 9. Create the layout for the bar chart. 
     var barLayout = {
-      title: "Greek gods search results",
+      title: "Top 10 Bacteria Cultures Found",
       margin: {
-        l: 100,
-        r: 150,
+        l: 200,
+        r: 0,
         t: 100,
         b: 100
       }
@@ -107,5 +108,40 @@ function buildCharts(sample) {
 
     // // 10. Use Plotly to plot the data with the layout. 
     Plotly.newPlot("bar", plotData, barLayout);
+
+    //Deliverable 2 - Bubble Chart
+    // 1. Create the trace for the bubble chart.
+    var bubbleData = [{
+      x: otuIds,
+      y: sampleValues,
+      text: otuLabels,
+      mode: 'markers',
+      marker: {
+      color: otuIds,
+      size: sampleValues
+      }
+    }];
+
+    // 2. Create the layout for the bubble chart.
+    var bubbleLayout = {
+      title: 'Bacteria Cultures Per Sample',
+      showlegend: false,
+      xaxis: {
+        title: {
+          text: 'OTU ID'
+        }
+      },
+      height: 500,
+      width: 600,
+      margin: {
+        l: 30,
+        r: 0,
+        t: 100,
+        b: 100
+      }
+    };
+
+    // 3. Use Plotly to plot the data with the layout.
+    Plotly.newPlot('bubble', bubbleData, bubbleLayout); 
   });
 }
